@@ -26,6 +26,7 @@ def debug_task(self):
 
 from celery.schedules import crontab
 
+# 注意下面引用的 tasks.add 的方法， 必须显示 import ，才能正确注册
 # this is important to load the celery tasks
 from recruitment.tasks import add
 
@@ -51,6 +52,14 @@ def setup_periodic_tasks(sender, **kwargs):
         test.s('Happy Mondays!'),
     )
 
+import json
+from django_celery_beat.models import PeriodicTask, IntervalSchedule
+
+##  先创建定时策略
+schedule, created = IntervalSchedule.objects.get_or_create(every=10,period=IntervalSchedule.SECONDS,)
+
+## 再创建任务
+task = PeriodicTask.objects.create(interval=schedule, name='say welcome 2020', task= 'recruitment.celery.test', args=json.dumps(['welcome'] ),)
 
 @app.task
 def test(arg):

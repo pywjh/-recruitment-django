@@ -57,7 +57,7 @@ REST_FRAMEWORK = {
     ]
 }
 
-CACHES_LOCAL = {
+CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
         'LOCATION': 'unique-snowflake',
@@ -71,7 +71,7 @@ CACHES_LOCAL = {
 
 CACHE_MIDDLEWARE_SECONDS = 60  # default cache time for the whole website
 
-CACHES = {
+CACHES_REDIS = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
         "LOCATION": "redis://127.0.0.1:6379/1",
